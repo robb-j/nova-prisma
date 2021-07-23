@@ -1,0 +1,9 @@
+{
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "dependencies": {
+    "@prisma/language-server": "^2.27.0"
+  }
+}

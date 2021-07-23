@@ -1,0 +1,55 @@
+// Schema for an identity service for a SaaS
+// This service tracks existing users & their accounts, as well as invites for users who haven't joined yet
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+enum UserRole {
+  USER
+  ADMIN
+}
+
+/// Users are the people that use our app, they have basic information and a role
+model User {
+  id        String   @id @default(uuid())
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+  name      String?
+  email     String
+  role      UserRole @default(ADMIN)
+  account   Account? @relation(fields: [accountId], references: [id])
+  accountId String?
+}
+
+enum PlanType {
+  FREE
+  PREMIUM
+}
+
+model Account {
+  id                   String   @id @default(uuid())
+  createdAt            DateTime @default(now())
+  updatedAt            DateTime @updatedAt
+  invites              Invite[]
+  users                User[]
+  stripeCustomerId     String
+  stripeSubscriptionId String
+  plan                 PlanType
+  referrer             String?
+  isActive             Boolean
+}
+
+model Invite {
+  id        String   @id @default(uuid())
+  dateSent  DateTime @default(now())
+  email     String
+  account   Account? @relation(fields: [accountId], references: [id])
+  accountId String?
+  isValid   Boolean  @default(true)
+}

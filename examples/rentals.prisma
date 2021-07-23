@@ -1,0 +1,95 @@
+// Schema for a fictional hotel
+// This hotel tracks rooms, user reservations & reviews
+// https://github.com/prisma/prisma-schema-examples/blob/main/rentalsPlatform/prisma/schema.prisma
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+enum UserRole {
+  USER
+  ADMIN
+}
+
+/// The users
+model User {
+  id           String        @id @default(uuid())
+  createdAt    DateTime      @default(now())
+  updatedAt    DateTime      @updatedAt
+  email        String        @unique
+  name         String
+  reservations Reservation[]
+  role         UserRole      @default(USER)
+  reviews      Review[]
+}
+
+model Reservation {
+  id        String   @id @default(uuid())
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+  userId    String?
+  user      User?    @relation(fields: [userId], references: [id])
+  startDate DateTime
+  endDate   DateTime
+  price     Int
+  total     Int
+  room      Room?    @relation(fields: [roomId], references: [id])
+  roomId    String?
+}
+
+enum RoomType {
+  SINGLE
+  DOUBLE
+  TRIPLE
+  QUAD
+  QUEEN
+  KING
+  TWIN
+  STUDIO
+  SUITE
+  ACCESSIBLE
+}
+
+model Room {
+  id                 String        @id @default(uuid())
+  createdAt          DateTime      @default(now())
+  updatedAt          DateTime      @updatedAt
+  reservations       Reservation[]
+  totalOccupancy     Int           @default(5)
+  totalBedrooms      Int           @default(5)
+  totalBathrooms     Int           @default(5)
+  summary            String?
+  address            String
+  isSmoking          Boolean       @default(false)
+  hasTV              Boolean       @default(true)
+  hasAirConditioning Boolean       @default(true)
+  hasHeating         Boolean       @default(true)
+  hasWIFI            Boolean       @default(true)
+  price              Int
+  roomType           RoomType
+  media              Media[]
+}
+
+model Review {
+  id        String   @id @default(uuid())
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+  rating    Int
+  comment   String
+  user      User     @relation(fields: [userId], references: [id])
+  userId    String
+}
+
+model Media {
+  id        String   @id @default(uuid())
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+  room      Room?    @relation(fields: [roomId], references: [id])
+  roomId    String?
+  fileName  String
+}

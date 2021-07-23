@@ -1,0 +1,22 @@
+{
+  "identifier": "robb-j.Prisma",
+  "name": "Prisma",
+  "organization": "Rob Anderson",
+  "description": "Adds Prisma schema syntax and validation to Nova",
+  "version": "0.0",
+  "categories": ["completions", "languages", "issues"],
+  "license": "MIT",
+  "repository": "https://github.com/robb-j/nova-prisma",
+  "bugs": "https://github.com/robb-j/nova-prisma/issues",
+
+  "main": "main.dist.js",
+
+  "activationEvents": ["onLanguage:prisma"],
+
+  "entitlements": {
+    "process": true,
+    "filesystem": "readwrite"
+  },
+
+  "config": []
+}
