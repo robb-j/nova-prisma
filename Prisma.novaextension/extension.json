@@ -3,7 +3,7 @@
   "name": "Prisma",
   "organization": "Rob Anderson",
   "description": "Adds Prisma schema syntax and validation to Nova",
-  "version": "0.0",
+  "version": "0.1",
   "categories": ["completions", "languages", "issues"],
   "license": "MIT",
   "repository": "https://github.com/robb-j/nova-prisma",
