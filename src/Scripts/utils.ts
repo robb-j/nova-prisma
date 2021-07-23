@@ -43,23 +43,6 @@ export function execute(
   });
 }
 
-export function copyToExtensionStorage(filename: string) {
-  const { globalStoragePath } = nova.extension;
-
-  const source = nova.path.join(nova.extension.path, filename);
-  const destination = nova.path.join(globalStoragePath, filename);
-
-  if (nova.fs.access(destination, nova.fs.constants.F_OK)) {
-    nova.fs.remove(destination);
-  }
-
-  if (!nova.fs.access(globalStoragePath, nova.fs.constants.F_OK)) {
-    nova.fs.mkdir(globalStoragePath);
-  }
-
-  nova.fs.copy(source, destination);
-}
-
 /**
  * Generate a method for namespaced debug-only logging,
  * inspired by https://github.com/visionmedia/debug.

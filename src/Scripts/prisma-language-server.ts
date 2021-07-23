@@ -1,4 +1,4 @@
-import { console, copyToExtensionStorage, createDebug, execute } from "./utils";
+import { console, createDebug, execute } from "./utils";
 
 type ServerOptions = ConstructorParameters<typeof LanguageClient>[2];
 type ClientOptions = ConstructorParameters<typeof LanguageClient>[3];
@@ -33,16 +33,18 @@ export class PrismaLanguageServer {
         this.languageClient = null;
       }
 
-      copyToExtensionStorage("package.json");
-      copyToExtensionStorage("package-lock.json");
+      const packageDir = nova.inDevMode()
+        ? nova.extension.path
+        : nova.extension.globalStoragePath;
 
       const { stdout } = await execute("/usr/bin/env", {
         args: ["npm", "install", "--no-audit", "--only=production"],
-        cwd: nova.extension.globalStoragePath,
+        cwd: packageDir,
       });
       debug(stdout.trim());
 
       const serverOptions = await this.getServerOptions(
+        packageDir,
         DEBUG_LOGS ? nova.workspace.path : null
       );
       const clientOptions: ClientOptions = {
@@ -87,10 +89,10 @@ export class PrismaLanguageServer {
     // ...
   }
 
-  async getServerOptions(debugPath: string | null) {
+  async getServerOptions(packageDir: string, debugPath: string | null) {
     const nodeArgs = ["--unhandled-rejections=warn"];
     const serverPath = nova.path.join(
-      nova.extension.globalStoragePath,
+      packageDir,
       "node_modules/@prisma/language-server/dist/src/cli.js"
     );
 

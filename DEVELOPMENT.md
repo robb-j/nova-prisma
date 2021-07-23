@@ -17,4 +17,5 @@ Code is heavily based off [robb-j/nova-yaml](https://github.com/robb-j/nova-yaml
 4. Bump the version in `extension.json`
 5. Commit as `X.Y.Z`
 6. Tag as `vX.Y.Z`
-7. **Extensions** → **Submit to the Extension Library...**
+7. Remove [node_modules](https://devforum.nova.app/t/submitting-my-extension-fails-with-the-file-semver-couldnt-be-opened-because-there-is-no-such-file/652)
+8. **Extensions** → **Submit to the Extension Library...**
