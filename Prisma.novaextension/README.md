@@ -10,7 +10,7 @@
 
 This version of Prisma is a prerelease and not all functionality exists yet.
 Things that are still to be done are on
-[GitHub Issues](https://github.com/robb-j/nova-prisma/issues/#1).
+[GitHub Issues](https://github.com/robb-j/nova-prisma/issues/1).
 
 ## Requirements
 
