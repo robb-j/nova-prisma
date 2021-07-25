@@ -131,15 +131,14 @@
         </ends-with>
         <subscopes>
           <include syntax="self" collection="comments" />
-          <scope name="pcl.identifier.type.enum">
+          <scope name="pcl.definition.property">
             <symbol type="enum-member">
               <context behavior="subtree" />
               <display-name>
                 <component variable="name" />
               </display-name>
             </symbol>
-            <expression>([a-zA-Z]\w+)</expression>
-            <capture number="1" name="pcl.value.symbols" />
+            <expression>[a-zA-Z]\w+</expression>
           </scope>
         </subscopes>
       </scope>
@@ -155,14 +154,16 @@
           </display-name>
         </symbol>
         <starts-with>
-          <expression>\s*([a-zA-Z]\w+)\s*(=)\s*</expression>
+          <expression>([a-zA-Z]\w+)</expression>
           <capture number="1" name="pcl.identifier.property" />
-          <capture number="2" name="pcl.operator" />
         </starts-with>
         <ends-with>
           <expression>(?=\n)</expression>
         </ends-with>
         <subscopes>
+          <scope name="pcl.operator">
+            <expression>=</expression>
+          </scope>
           <include syntax="self" collection="parameters" />
         </subscopes>
       </scope>
@@ -178,7 +179,7 @@
           </display-name>
         </symbol>
         <starts-with>
-          <expression>([a-zA-Z]\w+)\s*</expression>
+          <expression>([a-zA-Z]\w+)</expression>
           <capture number="1" name="pcl.identifier.property" />
         </starts-with>
         <ends-with>
@@ -193,13 +194,13 @@
           </scope>
           
           <!-- Relations -->
-          <scope name="pcl.identifier.type.relation">
+          <scope name="pcl.identifier.variable">
             <expression>[A-Z]\w+(\[\]|\?)?</expression>
             <capture number="1" name="pcl.bracket" />
           </scope>
           
           <!-- Decorators with parameters -->
-          <scope name="pcl.identifier.decorator.call" repeat="true">
+          <scope name="pcl.identifier.argument" repeat="true">
             <starts-with>
               <expression>@[a-zA-Z]\w+(\()</expression>
               <capture number="1" name="pcl.bracket" />
@@ -217,7 +218,7 @@
           </scope>
           
           <!-- Standalone decorator -->
-          <scope name="pcl.identifier.decorator" repeat="true">
+          <scope name="pcl.identifier.argument" repeat="true">
             <starts-with>
               <expression>@[a-zA-Z]\w+</expression>
             </starts-with>
@@ -246,11 +247,10 @@
     <collection name="expressions">
     
       <!-- Function call -->
-      <scope name="pcl.scalar.function">
+      <scope name="pcl.processing">
         <starts-with>
-          <expression>([a-zA-Z]\w+)(\()</expression>
-          <capture number="1" name="pcl.identifier.function" />
-          <capture number="2" name="pcl.bracket" />
+          <expression>[a-zA-Z]\w+(\()</expression>
+          <capture number="1" name="pcl.bracket" />
         </starts-with>
         <ends-with>
           <expression>(\))</expression>
