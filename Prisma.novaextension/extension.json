@@ -18,5 +18,24 @@
     "filesystem": "readwrite"
   },
 
-  "config": []
+  "config": [
+    {
+      "title": "Format on Save",
+      "key": "robb-j.prisma.formatOnSave",
+      "type": "boolean",
+      "default": false
+    }
+  ],
+
+  "commands": {
+    "editor": [
+      {
+        "title": "Format schema",
+        "command": "robb-j.prisma.format",
+        "filters": {
+          "syntaxes": ["prisma"]
+        }
+      }
+    ]
+  }
 }
