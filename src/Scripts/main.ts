@@ -38,13 +38,11 @@ export function deactivate() {
 nova.commands.register(
   "robb-j.prisma.format",
   getEditor(async (editor) => {
-    try {
-      if (langServer?.languageClient) {
-        await formatCommand(editor, langServer.languageClient);
-      }
-    } catch (error) {
+    if (!langServer?.languageClient) return;
+
+    await formatCommand(editor, langServer.languageClient).catch((error) => {
       debug(error.message);
       debug(error.stack);
-    }
+    });
   })
 );

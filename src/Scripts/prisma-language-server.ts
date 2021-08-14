@@ -86,7 +86,9 @@ export class PrismaLanguageServer {
   //
 
   setupLanguageServer(client: LanguageClient) {
-    // ...
+    client.onDidStop((error) => {
+      debug("Language Server Stopped", error?.message);
+    });
   }
 
   async getServerOptions(packageDir: string, debugPath: string | null) {

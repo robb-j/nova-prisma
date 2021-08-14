@@ -2,6 +2,8 @@
 // Utility files to help out and make code more readable
 //
 
+import type { Range as LspRange } from "vscode-languageserver-protocol";
+
 export type ProcessParams = ConstructorParameters<typeof Process>;
 export type ProcessOutput = { stdout: string; stderr: string; status: number };
 
@@ -62,19 +64,22 @@ export function createDebug(namespace: string) {
   };
 }
 
+/** Wrap Nova's weird Workspace/TextEditor command parameters */
+export function getEditor<T>(block: (editor: TextEditor) => T) {
+  return (
+    editorOrWorkspace: TextEditor | Workspace,
+    maybeEditor: TextEditor | null
+  ) => {
+    return block(maybeEditor ?? (editorOrWorkspace as TextEditor));
+  };
+}
+
 /**
  * Shamelessly stolen from
  * https://github.com/apexskier/nova-typescript/blob/2d4c1d8e61ca4afba6ee9ad1977a765e8cd0f037/src/lspNovaConversions.ts#L29
  */
-export interface LspRange {
-  start: { line: number; character: number };
-  end: { line: number; character: number };
-}
-export interface LspEdit {
-  range: LspRange;
-  newText: string;
-}
-export function getLspRange(document: TextDocument, range: LspRange): Range {
+/** Convert an LSP Range to a Nova one */
+export function getEditorRange(document: TextDocument, range: LspRange): Range {
   const fullContents = document.getTextInRange(new Range(0, document.length));
   let rangeStart = 0;
   let rangeEnd = 0;
@@ -94,12 +99,26 @@ export function getLspRange(document: TextDocument, range: LspRange): Range {
   return new Range(rangeStart, rangeEnd);
 }
 
-/** Wrap Nova's weird Workspace/TextEditor command parameters */
-export function getEditor<T>(block: (editor: TextEditor) => T) {
-  return (
-    editorOrWorkspace: TextEditor | Workspace,
-    maybeEditor: TextEditor | null
-  ) => {
-    return block(maybeEditor ?? (editorOrWorkspace as TextEditor));
-  };
+/** Convert an Nova Range to an LSP one */
+export function getLspRange(
+  document: TextDocument,
+  range: Range
+): LspRange | null {
+  const fullContents = document.getTextInRange(new Range(0, document.length));
+  let chars = 0;
+  let startLspRange: LspRange["start"] | undefined;
+  const lines = fullContents.split(document.eol);
+  for (let lineIndex = 0; lineIndex < lines.length; lineIndex++) {
+    const lineLength = lines[lineIndex].length + document.eol.length;
+    if (!startLspRange && chars + lineLength >= range.start) {
+      const character = range.start - chars;
+      startLspRange = { line: lineIndex, character };
+    }
+    if (startLspRange && chars + lineLength >= range.end) {
+      const character = range.end - chars;
+      return { start: startLspRange, end: { line: lineIndex, character } };
+    }
+    chars += lineLength;
+  }
+  return null;
 }
