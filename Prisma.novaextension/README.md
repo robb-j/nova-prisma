@@ -6,12 +6,6 @@
 
 <img src="https://raw.githubusercontent.com/robb-j/nova-prisma/main/Prisma.novaextension/Images/extension/linting.png" width="800" alt="Prisma Extension adds Prisma schema support to Nova">
 
-## Work in Progress
-
-This version of Prisma is a prerelease and not all functionality exists yet.
-Things that are still to be done are on
-[GitHub Issues](https://github.com/robb-j/nova-prisma/issues/1).
-
 ## Requirements
 
 Prisma requires some additional tools to be installed on your Mac:
@@ -34,8 +28,13 @@ Prisma displays relevant documentation when you hover over symbols:
 
 <img src="https://raw.githubusercontent.com/robb-j/nova-prisma/main/Prisma.novaextension/Images/extension/hovers.png" width="800" alt="Get tooltips when writting Prisma files">
 
-<!-- ### Configuration
+Prisma can automatically format your schemas on-save if you want,
+this can be turned on in **Configuration**.
+You can manually format prisma documents with the **Format Schema** command
+when a schema is open.
+
+### Configuration
 
 To configure global preferences, open **Extensions → Extension Library...** then select Prisma's **Preferences** tab.
 
-You can also configure preferences on a per-project basis in **Project → Project Settings...** -->
+<!-- You can also configure preferences on a per-project basis in **Project → Project Settings...** -->

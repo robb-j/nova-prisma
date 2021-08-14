@@ -2,9 +2,15 @@
   "identifier": "robb-j.Prisma",
   "name": "Prisma",
   "organization": "robb-j",
-  "description": "Adds Prisma schema syntax and validation to Nova",
-  "version": "0.2.0",
-  "categories": ["completions", "languages", "issues"],
+  "description": "Adds Prisma schema syntax, validation and formatting to Nova",
+  "version": "1.0.0",
+  "categories": [
+    "completions",
+    "languages",
+    "issues",
+    "formatters",
+    "commands"
+  ],
   "license": "MIT",
   "repository": "https://github.com/robb-j/nova-prisma",
   "bugs": "https://github.com/robb-j/nova-prisma/issues",
@@ -30,7 +36,7 @@
   "commands": {
     "editor": [
       {
-        "title": "Format schema",
+        "title": "Format Schema",
         "command": "robb-j.prisma.format",
         "filters": {
           "syntaxes": ["prisma"]
