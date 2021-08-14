@@ -1,4 +1,4 @@
-**Prisma** provides deep integration with **Prisma**, including syntax highlighting, code completion, linting.
+**Prisma** provides deep integration with **Prisma** schema files, including syntax highlighting, code completion, linting and formatting.
 
 <!--
 🎈 It can also be helpful to include a screenshot or GIF showing your extension in action:
