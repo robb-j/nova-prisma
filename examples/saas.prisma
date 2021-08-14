@@ -1,5 +1,6 @@
 // Schema for an identity service for a SaaS
 // This service tracks existing users & their accounts, as well as invites for users who haven't joined yet
+// https://github.com/prisma/templates/blob/main/saas/prisma/schema.prisma
 
 datasource db {
   provider = "postgresql"
@@ -52,4 +53,5 @@ model Invite {
   account   Account? @relation(fields: [accountId], references: [id])
   accountId String?
   isValid   Boolean  @default(true)
+}
 }

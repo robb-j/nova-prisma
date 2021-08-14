@@ -1,5 +1,6 @@
 // Schema for a simple URL shortener
 // This schema tracks short links by associating them to a user
+// https://github.com/prisma/templates/blob/main/urlShortener/prisma/schema.prisma
 
 datasource db {
   provider = "postgresql"
@@ -9,7 +10,6 @@ datasource db {
 generator client {
   provider = "prisma-client-js"
 }
-
 
 model Link {
   id        String   @id @default(uuid())
@@ -29,3 +29,5 @@ model User {
   email     String
   links     Link[]
 }
+
+

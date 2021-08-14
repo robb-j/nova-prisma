@@ -12,7 +12,7 @@ model Post {
   title     String
   content   String?
   published Boolean @default(false)
-  author    User?   @relation(fields:  [authorId], references: [id])
+  author    User?   @relation(fields: [authorId], references: [id])
   authorId  Int?
 }
 
@@ -21,5 +21,13 @@ model User {
   email String  @unique
   name  String?
   posts Post[]
+
+  @@map("something")
+}
+
+model Ignore {
+  id Int @id @default(autoincrement())
+
+  @@ignore
 }
 
