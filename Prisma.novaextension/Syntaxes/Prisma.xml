@@ -1,17 +1,17 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<syntax name="prisma">
+<syntax name="prisma" xmlns="https://www.nova.app/syntax">
   <meta>
     <name>Prisma</name>
     <type>structured</type>
     <preferred-file-extension>prisma</preferred-file-extension>
   </meta>
-  
+
   <!-- Detect *.prisma files -->
   <detectors>
     <extension priority="1.0">prisma</extension>
   </detectors>
-  
-  
+
+
   <!-- Increase indentation on { -->
   <!-- Decrease indentation after } -->
   <indentation>
@@ -22,46 +22,45 @@
       <expression>^\s*(\s*/\*.*\*/\s*)*[\}]</expression>
     </decrease>
   </indentation>
-  
-  
+
+
   <!-- Register single comments -->
   <comments>
     <single>
       <expression>//</expression>
     </single>
   </comments>
-  
-  
+
+
   <!-- Auto-close curly braces -->
   <brackets>
     <pair open="{" close="}" />
   </brackets>
-  
-  
+
+
   <!-- Learn about pairs -->
   <surrounding-pairs>
     <pair open="{" close="}" />
     <pair open="(" close=")" />
     <pair open="&quot;" close="&quot;" />
   </surrounding-pairs>
-  
-  
+
+
   <!-- Start off with blocks or comments -->
   <scopes>
     <include syntax="self" collection="comments" />
     <include syntax="self" collection="blocks" />
   </scopes>
-  
-  
-  
+
+
   <collections>
     <!-- Comments -->
     <collection name="comments">
       <scope name="pcl.comment.single" spell-check="true">
         <expression>\/\/.*$</expression>
       </scope>
-    </collection>  
-    
+    </collection>
+
     <collection name="blocks">
       <!-- Configuration block -->
       <scope name="pcl.definition.struct.configuration">
@@ -86,7 +85,7 @@
           <include syntax="self" collection="assignment" />
         </subscopes>
       </scope>
-      
+
       <!-- Model block -->
       <scope name="pcl.definition.struct.model">
         <symbol type="struct">
@@ -110,7 +109,7 @@
           <include syntax="self" collection="fields" />
         </subscopes>
       </scope>
-      
+
       <!-- Enum block -->
       <scope name="pcl.definition.enum">
         <symbol type="enum">
@@ -143,7 +142,7 @@
         </subscopes>
       </scope>
     </collection>
-    
+
     <!-- Assignment statement -->
     <collection name="assignment">
       <scope name="pcl.definition.assignment">
@@ -168,7 +167,7 @@
         </subscopes>
       </scope>
     </collection>
-    
+
     <!-- Model fields -->
     <collection name="fields">
       <scope name="pcl.definition.property">
@@ -186,38 +185,20 @@
           <expression>$</expression>
         </ends-with>
         <subscopes>
-        
+
           <!-- Builtin types -->
           <scope name="pcl.identifier.type.builtin">
             <expression>(Int|String|DateTime|Bytes|Decimal|Float|Json|Boolean)(\?)?</expression>
             <capture number="2" name="pcl.bracket" />
           </scope>
-          
+
           <!-- Relations -->
           <scope name="pcl.identifier.variable">
             <expression>[A-Z]\w+(\[\]|\?)?</expression>
             <capture number="1" name="pcl.bracket" />
           </scope>
-          
-          <!-- Decorators with parameters -->
-          <scope name="pcl.identifier.argument" repeat="true">
-            <starts-with>
-              <expression>@[a-zA-Z]\w+(\()</expression>
-              <capture number="1" name="pcl.bracket" />
-            </starts-with>
-            <ends-with>
-              <expression>(\))</expression>
-              <capture number="1" name="pcl.bracket" />
-            </ends-with>
-            <subscopes>
-              <cut-off>
-                <expression>(?=\n)</expression>
-              </cut-off>
-              <include syntax="self" collection="parameters" />
-            </subscopes>
-          </scope>
-          
-          <!-- Standalone decorator -->
+
+          <!-- Decorators -->
           <scope name="pcl.identifier.argument" repeat="true">
             <starts-with>
               <expression>@[a-zA-Z]\w+</expression>
@@ -225,11 +206,48 @@
             <ends-with>
               <expression>(?=\s)</expression>
             </ends-with>
+            <subscopes>
+              <include syntax="self" collection="method-call" />
+            </subscopes>
           </scope>
         </subscopes>
       </scope>
+      <scope name="pcl.identifier.argument">
+        <symbol type="property">
+          <context behavior="subtree" fold-type="function" />
+          <display-name>
+            <component selector="identifier.attribute" replace="&quot;" replace-with="" />
+          </display-name>
+        </symbol>
+        <starts-with>
+          <expression>@@[a-zA-Z]\w+</expression>
+        </starts-with>
+        <ends-with>
+          <expression>(?=\n)</expression>
+        </ends-with>
+        <subscopes>
+          <include syntax="self" collection="method-call" />
+        </subscopes>
+      </scope>
     </collection>
-    
+
+    <!-- The calling of a function, after the function identifier/name -->
+    <collection name="method-call">
+      <scope name="pcl.definition.method-call">
+        <starts-with>
+          <expression>(\()</expression>
+          <capture number="1" name="pcl.bracket" />
+        </starts-with>
+        <ends-with>
+          <expression>(\))</expression>
+          <capture number="1" name="pcl.bracket" />
+        </ends-with>
+        <subscopes>
+          <include syntax="self" collection="parameters" />
+        </subscopes>
+      </scope>
+    </collection>
+
     <!-- Parameters to pass to a function call -->
     <collection name="parameters">
       <scope name="pcl.operator.separator">
@@ -242,10 +260,10 @@
       </scope>
       <include syntax="self" collection="expressions" />
     </collection>
-    
+
     <!-- Scalar values -->
     <collection name="expressions">
-    
+
       <!-- Function call -->
       <scope name="pcl.processing">
         <starts-with>
@@ -260,22 +278,22 @@
           <include syntax="self" collection="parameters" />
         </subscopes>
       </scope>
-      
+
       <!-- String -->
       <scope name="pcl.string.double-quoted">
         <expression>&quot;[^&quot;]*&quot;</expression>
       </scope>
-      
+
       <!-- Boolean -->
       <scope name="pcl.constant.boolean">
         <expression>true|false</expression>
       </scope>
-      
+
       <!-- Variable -->
       <scope name="pcl.identifier.variable">
         <expression>[a-zA-Z]\w+</expression>
       </scope>
-      
+
       <!-- Array -->
       <scope name="pcl.scalar.array">
         <starts-with>
@@ -291,6 +309,6 @@
         </subscopes>
       </scope>
     </collection>
-    
+
   </collections>
 </syntax>
