@@ -154,7 +154,7 @@
         </symbol>
         <starts-with>
           <expression>([a-zA-Z]\w+)</expression>
-          <capture number="1" name="pcl.identifier.property" />
+          <capture number="1" name="pcl.definition.property" />
         </starts-with>
         <ends-with>
           <expression>(?=\n)</expression>
@@ -179,7 +179,7 @@
         </symbol>
         <starts-with>
           <expression>([a-zA-Z]\w+)</expression>
-          <capture number="1" name="pcl.identifier.property" />
+          <capture number="1" name="definition.property" />
         </starts-with>
         <ends-with>
           <expression>$</expression>
@@ -188,18 +188,30 @@
 
           <!-- Builtin types -->
           <scope name="pcl.identifier.type.builtin">
-            <expression>(Int|String|DateTime|Bytes|Decimal|Float|Json|Boolean)(\?)?</expression>
-            <capture number="2" name="pcl.bracket" />
+            <strings>
+              <string>Int</string>
+              <string>String</string>
+              <string>DateTime</string>
+              <string>Bytes</string>
+              <string>Decimal</string>
+              <string>Float</string>
+              <string>Json</string>
+              <string>Boolean</string>
+            </strings>
+          </scope>
+
+          <scope name="pcl.operator">
+            <expression>\?</expression>
           </scope>
 
           <!-- Relations -->
-          <scope name="pcl.identifier.variable">
+          <scope name="pcl.identifier.constant">
             <expression>[A-Z]\w+(\[\]|\?)?</expression>
-            <capture number="1" name="pcl.bracket" />
+            <capture number="1" name="pcl.operator" />
           </scope>
 
           <!-- Decorators -->
-          <scope name="pcl.identifier.argument" repeat="true">
+          <scope name="pcl.identifier.decorator" repeat="true">
             <starts-with>
               <expression>@[a-zA-Z]\w+</expression>
             </starts-with>
@@ -212,7 +224,7 @@
           </scope>
         </subscopes>
       </scope>
-      <scope name="pcl.identifier.argument">
+      <scope name="pcl.identifier.decorator">
         <symbol type="property">
           <context behavior="subtree" fold-type="function" />
           <display-name>
@@ -255,7 +267,7 @@
       </scope>
       <scope name="pcl.named-param">
         <expression>([a-zA-Z]\w+)(:)</expression>
-        <capture number="1" name="pcl.identifier.key" />
+        <capture number="1" name="pcl.identifier.argument" />
         <capture number="2" name="pcl.operator.separator" />
       </scope>
       <include syntax="self" collection="expressions" />
@@ -265,7 +277,7 @@
     <collection name="expressions">
 
       <!-- Function call -->
-      <scope name="pcl.processing">
+      <scope name="pcl.identifier.type.builtin">
         <starts-with>
           <expression>[a-zA-Z]\w+(\()</expression>
           <capture number="1" name="pcl.bracket" />
@@ -290,7 +302,7 @@
       </scope>
 
       <!-- Variable -->
-      <scope name="pcl.identifier.variable">
+      <scope name="pcl.identifier.constant">
         <expression>[a-zA-Z]\w+</expression>
       </scope>
 
