@@ -5,8 +5,8 @@ type ClientOptions = ConstructorParameters<typeof LanguageClient>[3];
 
 const debug = createDebug("prisma-language-server");
 
-const DEBUG_INSPECT = false;
-const DEBUG_LOGS = true;
+const DEBUG_INSPECT = nova.inDevMode() && false;
+const DEBUG_LOGS = nova.inDevMode() && false;
 
 export class PrismaLanguageServer {
   languageClient: LanguageClient | null = null;
