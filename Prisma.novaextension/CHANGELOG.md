@@ -1,3 +1,8 @@
+## Version 1.1.1
+
+Fixes an issue where the extension creates `stdin.log` and `stdout.log` files
+in your projects, sorry! Please remove these files.
+
 ## Version 1.1
 
 This release updates the internal language server and improves syntax definitions.
