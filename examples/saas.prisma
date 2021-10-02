@@ -54,4 +54,4 @@ model Invite {
   accountId String?
   isValid   Boolean  @default(true)
 }
-}
+
