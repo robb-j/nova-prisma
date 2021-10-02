@@ -1,3 +1,27 @@
+## Version 1.1
+
+This release updates the internal language server and improves syntax definitions.
+
+- The language server has been upgraded from `2.27.0` to `3.1.103`,
+  it will be automatically be installed when you next open a prisma file.
+  It may take a while for the extension to start up the first time while it updates.
+- The syntax definitions has been improved and is more aligned with the official
+  Visual Studio Code extension.
+
+<details>
+<summary>Syntax change details</summary>
+
+- Assignment's name is now `pcl.definition.property`
+- Model-field's name is now `pcl.definition.property`
+- Primitive types now match exact words, e.g. a `Interval` relation doesn't highlight `Int`
+- Optional/array operators are now a `pcl.operator`
+- Field attributes are now `pcl.identifier.decorator`
+- Named parameters are now `pcl.identifier.argument`
+- Builtins (e.g. `now()`) are now `pcl.identifier.type.builtin`
+- Variables are now `pcl.identifier.constant`
+
+</details>
+
 ## Version 1.0
 
 First release!
