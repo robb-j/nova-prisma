@@ -67,7 +67,7 @@
         <symbol type="struct">
           <context behavior="subtree" fold-type="function" />
           <display-name>
-            <component selector="identifier.type" replace="&quot;" replace-with="" />
+            <component selector="identifier.type" />
           </display-name>
         </symbol>
         <starts-with>
@@ -91,7 +91,7 @@
         <symbol type="struct">
           <context behavior="subtree" fold-type="function" />
           <display-name>
-            <component selector="identifier.type" replace="&quot;" replace-with="" />
+            <component selector="identifier.type" />
           </display-name>
         </symbol>
         <starts-with>
@@ -115,7 +115,7 @@
         <symbol type="enum">
           <context behavior="subtree" fold-type="function" />
           <display-name>
-            <component selector="identifier.type" replace="&quot;" replace-with="" />
+            <component selector="identifier.type" />
           </display-name>
         </symbol>
         <starts-with>
@@ -149,7 +149,7 @@
         <symbol type="property">
           <context behavior="subtree" fold-type="function" />
           <display-name>
-            <component selector="identifier.property" replace="&quot;" replace-with="" />
+            <component selector="definition.property" />
           </display-name>
         </symbol>
         <starts-with>
@@ -174,7 +174,7 @@
         <symbol type="property">
           <context behavior="subtree" fold-type="function" />
           <display-name>
-            <component selector="identifier.property" replace="&quot;" replace-with="" />
+            <component selector="definition.property" />
           </display-name>
         </symbol>
         <starts-with>
@@ -224,15 +224,17 @@
           </scope>
         </subscopes>
       </scope>
+
       <scope name="pcl.identifier.decorator">
         <symbol type="property">
           <context behavior="subtree" fold-type="function" />
           <display-name>
-            <component selector="identifier.attribute" replace="&quot;" replace-with="" />
+            <component selector="identifier.decorator" />
           </display-name>
         </symbol>
         <starts-with>
           <expression>@@[a-zA-Z]\w+</expression>
+          <capture number="0" name="identifier.decorator" />
         </starts-with>
         <ends-with>
           <expression>(?=\n)</expression>
