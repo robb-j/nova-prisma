@@ -37,11 +37,13 @@ export class PrismaLanguageServer {
         ? nova.extension.path
         : nova.extension.globalStoragePath;
 
-      const { stdout } = await execute("/usr/bin/env", {
-        args: ["npm", "install", "--no-audit", "--only=production"],
-        cwd: packageDir,
-      });
-      debug(stdout.trim());
+      if (!nova.inDevMode()) {
+        const { stdout } = await execute("/usr/bin/env", {
+          args: ["npm", "install", "--no-audit", "--only=production"],
+          cwd: packageDir,
+        });
+        debug(stdout.trim());
+      }
 
       const serverOptions = await this.getServerOptions(
         packageDir,
@@ -68,8 +70,13 @@ export class PrismaLanguageServer {
 
       this.setupLanguageServer(client);
     } catch (error) {
-      console.log(error);
-      console.log(error.stack);
+      if (error instanceof Error) {
+        console.error(error);
+        console.error(error.stack);
+      } else {
+        console.error("A non-error was thrown");
+        console.error(error);
+      }
     }
   }
 
