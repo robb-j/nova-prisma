@@ -3,7 +3,7 @@
   "name": "Prisma",
   "organization": "robb-j",
   "description": "Adds Prisma schema syntax, validation and formatting to Nova",
-  "version": "1.1.1",
+  "version": "1.2.0",
   "categories": [
     "completions",
     "languages",
