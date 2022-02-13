@@ -3,8 +3,13 @@
     "build" : {
       "enabled" : true,
       "path" : "bin\/build.sh"
+    },
+    "run" : {
+      "enabled" : true,
+      "path" : "bin\/run.sh"
     }
   },
+  "buildBeforeRunning" : true,
   "identifier" : "E86E0266-3DFD-4D81-859A-1C59FBEFD8ED",
   "openLogOnRun" : "fail"
 }
