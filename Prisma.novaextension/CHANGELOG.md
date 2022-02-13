@@ -1,3 +1,11 @@
+## Version 1.2.0
+
+This release updates the internal language server
+
+- It has been upgraded from `3.1.103` to `3.9.2`,
+  inspect [Prisma Releases](https://github.com/prisma/prisma/releases) for detailed information.
+- It should contain no [breaking changes](https://www.prisma.io/docs/about/prisma/releases).
+
 ## Version 1.1.1
 
 Fixes an issue where the extension creates `stdin.log` and `stdout.log` files
