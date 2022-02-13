@@ -58,7 +58,7 @@ export class PrismaLanguageServer {
 
       const client = new LanguageClient(
         "robb-j.prisma",
-        nova.extension.name,
+        "Prisma Language Server",
         serverOptions,
         clientOptions
       );
