@@ -1,11 +1,14 @@
-import { console, createDebug, execute } from "./utils";
+import { console, createDebug, findBinaryPath, logError } from "./utils.js";
 
 type ServerOptions = ConstructorParameters<typeof LanguageClient>[2];
 type ClientOptions = ConstructorParameters<typeof LanguageClient>[3];
 
 const debug = createDebug("prisma-language-server");
 
+// Start the server with --inspect-brk
 const DEBUG_INSPECT = nova.inDevMode() && false;
+
+// Log stdin and stdout of the server to local files
 const DEBUG_LOGS = nova.inDevMode() && false;
 
 export class PrismaLanguageServer {
@@ -37,13 +40,8 @@ export class PrismaLanguageServer {
         ? nova.extension.path
         : nova.extension.globalStoragePath;
 
-      if (!nova.inDevMode()) {
-        const { stdout } = await execute("/usr/bin/env", {
-          args: ["npm", "install", "--no-audit", "--only=production"],
-          cwd: packageDir,
-        });
-        debug(stdout.trim());
-      }
+      const installed = await this.installPackages(packageDir);
+      if (!installed) return;
 
       const serverOptions = await this.getServerOptions(
         packageDir,
@@ -68,7 +66,9 @@ export class PrismaLanguageServer {
       nova.subscriptions.add(client as any);
       this.languageClient = client;
 
-      this.setupLanguageServer(client);
+      client.onDidStop((error) => {
+        debug("Language Server Stopped", error?.message);
+      });
     } catch (error) {
       if (error instanceof Error) {
         console.error(error);
@@ -92,10 +92,64 @@ export class PrismaLanguageServer {
 
   //
 
-  setupLanguageServer(client: LanguageClient) {
-    client.onDidStop((error) => {
-      debug("Language Server Stopped", error?.message);
+  async installPackages(installDir: string): Promise<boolean> {
+    // Extension developers should manually install dependencies
+    if (nova.inDevMode()) return true;
+
+    debug("#installPackages", installDir);
+
+    const proc = new Process("/usr/bin/env", {
+      args: ["npm", "install", "--no-audit", "--omit=dev"],
+      cwd: installDir,
     });
+    proc.onStdout((line) => debug("npm install: " + line));
+    proc.onStderr((line) => console.error("ERROR(npm install): " + line));
+    proc.start();
+
+    const success = await new Promise<boolean>((resolve) => {
+      proc.onDidExit((status) => resolve(status === 0));
+    });
+
+    if (success) return true;
+
+    const msg = new NotificationRequest("npm-install-failed");
+    msg.title = nova.localize("npm-install-failed-title");
+    msg.body = nova.localize("npm-install-failed-body");
+    msg.actions = [nova.localize("ok"), nova.localize("submit-bug")];
+
+    const response = await nova.notifications
+      .add(msg)
+      .catch((error) => logError("Notification failed", error));
+
+    if (response?.actionIdx === 1) {
+      nova.openURL("https://github.com/robb-j/nova-yaml/issues");
+    }
+
+    return false;
+  }
+
+  async getNodeJsPath(): Promise<string | null> {
+    const nodePath = await findBinaryPath("node");
+    debug("nodePath", nodePath);
+
+    if (nodePath) return nodePath;
+
+    const msg = new NotificationRequest("node-js-not-found");
+    msg.title = nova.localize("node-not-found-title");
+    msg.body = nova.localize("node-not-found-body");
+    msg.actions = [nova.localize("ok"), nova.localize("open-readme")];
+
+    const response = await nova.notifications
+      .add(msg)
+      .catch((error) => logError("Notification failed", error));
+
+    if (response?.actionIdx === 1) {
+      nova.openURL(
+        "https://github.com/robb-j/nova-yaml/tree/main/yaml.novaextension#requirements",
+      );
+    }
+
+    return null;
   }
 
   async getServerOptions(packageDir: string, debugPath: string | null) {
@@ -109,7 +163,7 @@ export class PrismaLanguageServer {
       nodeArgs.push("--inspect-brk=9231", "--trace-warnings");
     }
 
-    const nodePath = await this.findNodeJsPath();
+    const nodePath = await this.getNodeJsPath();
     debug("nodePath", nodePath);
 
     if (!nodePath) {
@@ -135,12 +189,5 @@ export class PrismaLanguageServer {
       path: nodePath,
       args: [...nodeArgs, serverPath, "--stdio"],
     } as ServerOptions;
-  }
-
-  async findNodeJsPath(): Promise<string | null> {
-    const { stdout, status } = await execute("/usr/bin/env", {
-      args: ["which", "node"],
-    });
-    return status === 0 ? stdout.trim() : null;
   }
 }

@@ -2,10 +2,9 @@
 // Extension entry point
 //
 
-import { createDebug, getEditor } from "./utils";
-import { PrismaLanguageServer } from "./prisma-language-server";
-
-import { formatCommand } from "./commands/format-command";
+import { createDebug, getEditor } from "./utils.js";
+import { PrismaLanguageServer } from "./prisma-language-server.js";
+import { formatCommand } from "./commands/format-command.js";
 
 const debug = createDebug("main");
 let langServer: PrismaLanguageServer | null = null;

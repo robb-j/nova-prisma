@@ -3,7 +3,7 @@ import type {
   TextEdit,
 } from "vscode-languageserver-protocol";
 
-import { createDebug, getEditorRange } from "../utils";
+import { createDebug, getEditorRange } from "../utils.js";
 
 const debug = createDebug("format");
 
@@ -30,7 +30,7 @@ export async function formatCommand(
 
   if (!result) return;
 
-  editor.edit((edit) => {
+  await editor.edit((edit) => {
     for (const change of result.reverse()) {
       edit.replace(
         getEditorRange(editor.document, change.range),

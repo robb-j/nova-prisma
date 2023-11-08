@@ -96,7 +96,7 @@ export function getEditorRange(document: TextDocument, range: LspRange): Range {
     }
     chars += lineLength;
   }
-  return new Range(rangeStart, rangeEnd);
+  return new Range(rangeStart, Math.min(fullContents.length, rangeEnd));
 }
 
 /** Convert an Nova Range to an LSP one */
@@ -121,4 +121,27 @@ export function getLspRange(
     chars += lineLength;
   }
   return null;
+}
+
+/** Find the full path of a binary */
+export async function findBinaryPath(binary: string): Promise<string | null> {
+  const { stdout, status } = await execute("/usr/bin/env", {
+    args: ["which", binary],
+  });
+  return status === 0 ? stdout.trim() : null;
+}
+
+/**
+ * Output put a potentially unknown error
+ */
+export function logError(message: string, error: unknown) {
+  console.error(message);
+
+  if (error instanceof Error) {
+    console.error(error.message);
+    console.error(error.stack);
+  } else {
+    console.error("An non-error was thrown");
+    console.error(error);
+  }
 }
