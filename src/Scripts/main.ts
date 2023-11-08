@@ -44,5 +44,5 @@ nova.commands.register(
       debug(error.message);
       debug(error.stack);
     });
-  })
+  }),
 );

@@ -47,7 +47,7 @@ export class PrismaLanguageServer {
 
       const serverOptions = await this.getServerOptions(
         packageDir,
-        DEBUG_LOGS ? nova.workspace.path : null
+        DEBUG_LOGS ? nova.workspace.path : null,
       );
       const clientOptions: ClientOptions = {
         syntaxes: ["prisma"],
@@ -60,7 +60,7 @@ export class PrismaLanguageServer {
         "robb-j.prisma",
         "Prisma Language Server",
         serverOptions,
-        clientOptions
+        clientOptions,
       );
 
       client.start();
@@ -102,7 +102,7 @@ export class PrismaLanguageServer {
     const nodeArgs = ["--unhandled-rejections=warn"];
     const serverPath = nova.path.join(
       packageDir,
-      "node_modules/@prisma/language-server/dist/src/cli.js"
+      "node_modules/@prisma/language-server/dist/src/cli.js",
     );
 
     if (DEBUG_INSPECT) {

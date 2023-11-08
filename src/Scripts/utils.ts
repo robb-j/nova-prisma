@@ -17,7 +17,7 @@ export const console: Console = (globalThis as any).console;
  */
 export function execute(
   path: ProcessParams[0],
-  options: ProcessParams[1]
+  options: ProcessParams[1],
 ): Promise<ProcessOutput> {
   return new Promise<ProcessOutput>((resolve) => {
     const process = new Process(path, options);
@@ -37,7 +37,7 @@ export function execute(
         status,
         stderr: stderr.join("\n"),
         stdout: stdout.join("\n"),
-      })
+      }),
     );
 
     // Start the process
@@ -58,7 +58,7 @@ export function createDebug(namespace: string) {
     if (!nova.inDevMode()) return;
 
     const humanArgs = args.map((arg) =>
-      typeof arg === "object" ? JSON.stringify(arg) : arg
+      typeof arg === "object" ? JSON.stringify(arg) : arg,
     );
     console.info(`${namespace}:`, ...humanArgs);
   };
@@ -68,7 +68,7 @@ export function createDebug(namespace: string) {
 export function getEditor<T>(block: (editor: TextEditor) => T) {
   return (
     editorOrWorkspace: TextEditor | Workspace,
-    maybeEditor: TextEditor | null
+    maybeEditor: TextEditor | null,
   ) => {
     return block(maybeEditor ?? (editorOrWorkspace as TextEditor));
   };
@@ -102,7 +102,7 @@ export function getEditorRange(document: TextDocument, range: LspRange): Range {
 /** Convert an Nova Range to an LSP one */
 export function getLspRange(
   document: TextDocument,
-  range: Range
+  range: Range,
 ): LspRange | null {
   const fullContents = document.getTextInRange(new Range(0, document.length));
   let chars = 0;

@@ -9,7 +9,7 @@ const debug = createDebug("format");
 
 export async function formatCommand(
   editor: TextEditor,
-  client: LanguageClient
+  client: LanguageClient,
 ) {
   const params: DocumentFormattingParams = {
     textDocument: {
@@ -25,7 +25,7 @@ export async function formatCommand(
 
   const result = (await client.sendRequest(
     "textDocument/formatting",
-    params
+    params,
   )) as TextEdit[] | null;
 
   if (!result) return;
@@ -34,7 +34,7 @@ export async function formatCommand(
     for (const change of result.reverse()) {
       edit.replace(
         getEditorRange(editor.document, change.range),
-        change.newText
+        change.newText,
       );
     }
   });
