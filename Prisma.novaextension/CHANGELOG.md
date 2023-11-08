@@ -1,3 +1,10 @@
+## Version 1.3.0
+
+This release updates the internal language server & fixes a bug with the formatter.
+
+- It has been upgraded from `3.9.2` to `5.5.2`,
+  inspect [Prisma Releases](https://github.com/prisma/prisma/releases?q=Language+tools&expanded=true) for detailed information (look for "Language tools").
+
 ## Version 1.2.0
 
 This release updates the internal language server
