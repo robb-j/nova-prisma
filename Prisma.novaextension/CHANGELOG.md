@@ -1,3 +1,10 @@
+## Version 2.0.0
+
+**BREAKING CHANGE** Unfortunately, this extension now requires Node version 20 to be installed, please make sure to update your system.
+
+This release upgrades the language server from `5.5.2` to `6.5.0`,
+inspect [Prisma Releases](https://github.com/prisma/prisma/releases?q=Language+tools&expanded=true) for detailed information (look for "Language tools").
+
 ## Version 1.3.0
 
 This release updates the internal language server & fixes a bug with the formatter.

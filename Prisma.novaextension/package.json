@@ -4,6 +4,6 @@
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "dependencies": {
-    "@prisma/language-server": "^5.5.2"
+    "@prisma/language-server": "^6.5.0"
   }
 }

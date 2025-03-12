@@ -10,7 +10,7 @@
 
 Prisma requires some additional tools to be installed on your Mac:
 
-- [Node.js 18](https://nodejs.org) and NPM 6.0 or newer
+- [Node.js 20](https://nodejs.org) and NPM 6.0 or newer
 
 > To install the current stable version of Node, click the "Recommended for Most Users" button to begin the download. When that completes, double-click the **.pkg** installer to begin installation.
 

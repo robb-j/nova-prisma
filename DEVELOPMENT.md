@@ -17,10 +17,10 @@ npm install
 ## Regular use
 
 For development, use the `Development` task to build and run the extension locally.
-**Build** will compile the TypeScript into JavaScript into the extension folder.
-**Run** will do the build, install bundled dependencies and activate the extension in Nova.
+**Build** will compile the TypeScript into JavaScript into the extension folder and install bundled dependencies.
+Use **Extensions → Activate Project as Extension** to run the extension.
 Nova will run the extension locally and restart when any file inside the `.novaextension` changes,
-i.e. by running the **Build** task.
+i.e. by running the **Build** task again.
 
 > Make sure to disable the extension if a published version is already installed.
 
@@ -32,7 +32,7 @@ Use the files in the [examples](/examples) folder to test out different features
 ## Code formatting
 
 This repository uses [Prettier](https://prettier.io/),
-[yorkie](https://www.npmjs.com/package/yorkie)
+[husky](https://www.npmjs.com/package/husky)
 and [lint-staged](https://www.npmjs.com/package/lint-staged) to
 automatically format code when staging code git commits.
 
@@ -40,6 +40,8 @@ You can manually run the formatter with `npm run format` if you want.
 
 Prettier ignores files using [.prettierignore](/.prettierignore)
 or specific lines after a `// prettier-ignore` comment.
+
+To automatically format when committing, run `npm run prepare`
 
 ## Links
 

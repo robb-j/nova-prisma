@@ -153,10 +153,10 @@ export class PrismaLanguageServer {
   }
 
   async getServerOptions(packageDir: string, debugPath: string | null) {
-    const nodeArgs = ["--unhandled-rejections=warn"];
+    const nodeArgs = [];
     const serverPath = nova.path.join(
       packageDir,
-      "node_modules/@prisma/language-server/dist/src/cli.js",
+      "node_modules/@prisma/language-server/dist/cli.js",
     );
 
     if (DEBUG_INSPECT) {
